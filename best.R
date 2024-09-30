@@ -37,3 +37,22 @@ best <- function(state, outcome) {
 
 > best("SC", "heart attack")
 [1] "MUSC MEDICAL CENTER"
+
+
+## set workspace and edit functions
+
+setwd("~/Desktop/jhcoursera/class/week_4/rprog-data-ProgAssignment3-data")
+
+
+best2 <- function(state, outcome) {
+    outcome2 <- read.csv("outcome-of-care-measures.csv", header = TRUE, stringsAsFactors = F)
+    outcomevector <- c("heart attack", "heart failure", "pneumonia")
+    if(!(state %in% unique(outcome2$State))) stop("invalid state")
+    if(!(outcome %in% outcomevector)) stop("invalid outcome")
+    
+    X <- outcome2[outcome2$State == state,]
+    names(X)[c(11, 17, 23)] <- outcomevector
+    answer <- X[X[, outcome] == min(X[, outcome]), ][2]
+    FA <- answer[with(answer, order(Hospital.Name)), ]
+    FA[1]
+}
